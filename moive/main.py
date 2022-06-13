@@ -3,7 +3,7 @@ import torch
 import argparse
 import numpy as np
 
-from models import FMLPRecModel
+from models import CIFARecModel
 from trainers import FMLPRecTrainer
 from utils import (
     EarlyStopping,
@@ -20,14 +20,14 @@ from data.preprocess import get_seq_dic
 def main():
     # 参数设置
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", default="./data/", type=str)
-    parser.add_argument("--output_dir", default="./output/", type=str)
+    parser.add_argument("--data_dir", default="./moive/data/", type=str)
+    parser.add_argument("--output_dir", default="./moive/output/", type=str)
     parser.add_argument("--data_name", default="ml_1m", type=str)
     parser.add_argument("--do_eval", action="store_true")
     parser.add_argument("--load_model", default=None, type=str)
 
     # model args
-    parser.add_argument("--model_name", default="FMLPRec", type=str)
+    parser.add_argument("--model_name", default="CIFARec", type=str)
     parser.add_argument("--hidden_size", default=16, type=int, help="hidden size of model")
     parser.add_argument(
         "--num_hidden_layers",
@@ -110,7 +110,7 @@ def main():
     # 将用户过去的这一系列交互行为视作用户行为序列，并通过构建模型对其建模，来预测下一时刻用户最感兴趣的内容，这就是序列化推荐（Sequential Recommendation）的核心思想
 
     # 初始化模型
-    model = FMLPRecModel(args=args)
+    model = CIFARecModel(args=args)
 
     # 初始化训练器
     trainer = FMLPRecTrainer(model, train_dataloader, eval_dataloader, test_dataloader, args)

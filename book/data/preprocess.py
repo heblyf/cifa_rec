@@ -160,7 +160,7 @@ def get_seq_dic(args):
 if __name__ == "__main__":
     # 参数设置
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", default="data", type=str)
+    parser.add_argument("--data_dir", default="book/data", type=str)
     parser.add_argument("--limit", default=10000, type=int)
 
     args = parser.parse_args()

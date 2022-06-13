@@ -3,9 +3,9 @@ import torch.nn as nn
 from modules import Encoder, AdaNorm
 
 
-class FMLPRecModel(nn.Module):
+class CIFARecModel(nn.Module):
     def __init__(self, args):
-        super(FMLPRecModel, self).__init__()
+        super(CIFARecModel, self).__init__()
         self.args = args
         # item embedding
         self.item_embeddings = nn.Embedding(args.item_size, args.hidden_size, padding_idx=0)
@@ -31,7 +31,7 @@ class FMLPRecModel(nn.Module):
 
         # pytorch 中的 model.apply(fn) 会递归地将函数 fn 应用到父模块的每个子模块 submodule，也包括 model 自身
         self.apply(self.init_weights)
-        print("FMLPRecModel init succeed.")
+        print("CIFARecModel init succeed.")
 
     def embedding(self, sequence, ratings, genres, users, users_gender, users_age):
         # sequence batch_size*max_seq

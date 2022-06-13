@@ -5,8 +5,8 @@
 .DS_Store
 *.tgz
 *.zip
-__pycache__
 *.pyc
 /.pycharm/parameter
-
 .ipynb_checkpoints
+output
+__pycache__
