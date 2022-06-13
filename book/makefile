@@ -8,4 +8,4 @@ train:
 
 .PHONY: eval
 eval:
-	python main.py --do_eval
+	python main.py --do_eval --data_dir="data" --output_dir="output"
