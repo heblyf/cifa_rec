@@ -84,8 +84,8 @@ def main():
     # 保存参数
     cur_time = get_local_time()
     if args.no_filters:
-        args.model_name = "SASRec"
-    args_str = f"{args.model_name}-{args.data_name}-{cur_time}"
+        args.model_name = "CIFARec"
+    args_str = f"{args.model_name}-{args.data_name}"
     args.log_file = os.path.join(args.output_dir, args_str + ".txt")
     print(str(args))
     with open(args.log_file, "a") as f:

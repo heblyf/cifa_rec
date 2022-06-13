@@ -4,8 +4,8 @@ setup:
 
 .PHONY: train
 train:
-	python main.py --epochs=1 --data_dir="data" --output_dir="output"
+	python main.py --data_dir="data" --output_dir="output"
 
 .PHONY: eval
 eval:
-	python main.py --do_eval --data_dir="data" --output_dir="output"
+	python main.py --do_eval --data_dir="data" --output_dir="output" --load_model="CIFARec-book_recommend"

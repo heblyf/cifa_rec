@@ -8,4 +8,4 @@ train:
 
 .PHONY: eval
 eval:
-	python main.py --do_eval --data_dir="data" --output_dir="output"
+	python main.py --do_eval --data_dir="data" --output_dir="output" --load_model="CIFARec-ml_1m"
