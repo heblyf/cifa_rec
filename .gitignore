@@ -1,0 +1,12 @@
+.idea
+.vscode
+.CodeCounter
+.VSCodeCounter
+.DS_Store
+*.tgz
+*.zip
+__pycache__
+*.pyc
+/.pycharm/parameter
+
+.ipynb_checkpoints
