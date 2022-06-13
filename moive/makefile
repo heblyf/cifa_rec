@@ -4,7 +4,7 @@ setup:
 
 .PHONY: train
 train:
-	python main.py --epochs=1
+	python main.py --epochs=1 --data_dir="data" --output_dir="output"
 
 .PHONY: eval
 eval:
