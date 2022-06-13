@@ -138,11 +138,11 @@ class Trainer:
         return rating_pred
 
 
-class FMLPRecTrainer(Trainer):
+class CIFARecTrainer(Trainer):
     def __init__(self, model, train_dataloader, eval_dataloader, test_dataloader, args):
-        super(FMLPRecTrainer, self).__init__(
+        super(CIFARecTrainer, self).__init__(
             model, train_dataloader, eval_dataloader, test_dataloader, args
-        )  # 一定要用 super(Cat, self).__init__() 去初始化父类，否则，继承自 Trainer 的 FMLPRecTrainer 子类将没有那些属性
+        )  # 一定要用 super(Cat, self).__init__() 去初始化父类，否则，继承自 Trainer 的 CIFARecTrainer 子类将没有那些属性
 
     def iteration(self, epoch, dataloader, full_sort=False, train=True):
 

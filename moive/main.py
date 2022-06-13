@@ -4,7 +4,7 @@ import argparse
 import numpy as np
 
 from models import CIFARecModel
-from trainers import FMLPRecTrainer
+from trainers import CIFARecTrainer
 from utils import (
     EarlyStopping,
     check_path,
@@ -113,7 +113,7 @@ def main():
     model = CIFARecModel(args=args)
 
     # 初始化训练器
-    trainer = FMLPRecTrainer(model, train_dataloader, eval_dataloader, test_dataloader, args)
+    trainer = CIFARecTrainer(model, train_dataloader, eval_dataloader, test_dataloader, args)
 
     if args.full_sort:
         # XXX full_sort 为了保证顺序
