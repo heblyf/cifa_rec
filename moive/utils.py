@@ -7,7 +7,7 @@ import numpy as np
 
 from scipy.sparse import csr_matrix
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
-from datasets import FMLPRecDataset
+from datasets import CIFARecDataset
 
 sequential_data_list = ["Beauty", "Sports_and_Outdoors", "Toys_and_Games", "Yelp", "ml_1m"]
 session_based_data_list = ["nowplaying", "retailrocket", "tmall", "yoochoose"]
@@ -307,12 +307,12 @@ def get_dataloder(args, seq_dic):
 
     if args.data_name in sequential_data_list:
         # 构造 train、eval、test 数据集
-        train_dataset = FMLPRecDataset(args, seq_dic, data_type="train")
+        train_dataset = CIFARecDataset(args, seq_dic, data_type="train")
         # train_sampler = RandomSampler(train_dataset)
         train_sampler = SequentialSampler(train_dataset)
         train_dataloader = DataLoader(train_dataset, sampler=train_sampler, batch_size=args.batch_size)
 
-        eval_dataset = FMLPRecDataset(
+        eval_dataset = CIFARecDataset(
             args,
             seq_dic,
             test_neg_items=seq_dic["sample_seq"],
@@ -321,7 +321,7 @@ def get_dataloder(args, seq_dic):
         eval_sampler = SequentialSampler(eval_dataset)
         eval_dataloader = DataLoader(eval_dataset, sampler=eval_sampler, batch_size=args.batch_size)
 
-        test_dataset = FMLPRecDataset(
+        test_dataset = CIFARecDataset(
             args,
             seq_dic,
             test_neg_items=seq_dic["sample_seq"],
@@ -331,11 +331,11 @@ def get_dataloder(args, seq_dic):
         test_dataloader = DataLoader(test_dataset, sampler=test_sampler, batch_size=args.batch_size)
 
     elif args.data_name in session_based_data_list:
-        train_dataset = FMLPRecDataset(args, seq_dic["user_seq"], data_type="session")
+        train_dataset = CIFARecDataset(args, seq_dic["user_seq"], data_type="session")
         train_sampler = RandomSampler(train_dataset)
         train_dataloader = DataLoader(train_dataset, sampler=train_sampler, batch_size=args.batch_size)
 
-        eval_dataset = FMLPRecDataset(
+        eval_dataset = CIFARecDataset(
             args,
             seq_dic["user_seq_eval"],
             test_neg_items=seq_dic["sample_seq_eval"],
@@ -344,7 +344,7 @@ def get_dataloder(args, seq_dic):
         eval_sampler = SequentialSampler(eval_dataset)
         eval_dataloader = DataLoader(eval_dataset, sampler=eval_sampler, batch_size=args.batch_size)
 
-        test_dataset = FMLPRecDataset(
+        test_dataset = CIFARecDataset(
             args,
             seq_dic["user_seq_test"],
             test_neg_items=seq_dic["sample_seq_test"],
