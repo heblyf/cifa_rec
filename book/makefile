@@ -1,6 +1,6 @@
 .PHONY: setup
 setup:
-	python data/preprocess.py --data_dir="data"
+	python data/preprocess.py --data_dir="data" ----limit=300000
 
 .PHONY: train
 train:
