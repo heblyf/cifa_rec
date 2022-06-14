@@ -1,6 +1,6 @@
 .PHONY: clean
 clean:
-	rm -rf output/FMLPRec-*
+	rm -rf output/CIFARec-*
 	rm -rf data/seq_dict.pkl
 
 .PHONY: format

@@ -124,7 +124,7 @@ def main():
             print(f"No model input!")
             exit(0)
         else:
-            args.checkpoint_path = os.path.join(args.output_dir, args.load_model + ".pt")  # output/FMLPRec-Beauty-*.pt
+            args.checkpoint_path = os.path.join(args.output_dir, args.load_model + ".pt")
             trainer.load(args.checkpoint_path)
             print(f"Load model from {args.checkpoint_path} for test!")
             scores, result_info = trainer.test(0, full_sort=args.full_sort)
