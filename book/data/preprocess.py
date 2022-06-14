@@ -101,7 +101,9 @@ def gen_seq_dic(args):
     rating_seq = []
     user_id_seq = []
     count = 0
-    for i in range(args.limit):
+    process_count = args.limit if args.limit < len(user_ids) else len(user_ids)
+    print(process_count)
+    for i in range(process_count):
         user_id = user_ids[i]
         # 用户交互的 book 序列
         book_seq = ratings.loc[ratings["User-ID"] == user_id]
