@@ -4,6 +4,9 @@ from torch.utils.data import Dataset
 
 
 class CIFARecDataset(Dataset):
+    """
+    
+    """
     def __init__(self, args, seq_dic, test_neg_items=None, data_type="train"):
         self.args = args
         self.user_seq = []

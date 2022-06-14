@@ -137,14 +137,9 @@ def generate_rating_matrix_test(user_seq, num_users, num_items):
 
 def get_rating_matrix(data_name, seq_dic, max_item):
     num_items = max_item + 1
-    if data_name in sequential_data_list:
-        valid_rating_matrix = generate_rating_matrix_valid(seq_dic["user_seq"], seq_dic["num_users"], num_items)
-        test_rating_matrix = generate_rating_matrix_test(seq_dic["user_seq"], seq_dic["num_users"], num_items)
-    elif data_name in session_based_data_list:
-        valid_rating_matrix = generate_rating_matrix_test(
-            seq_dic["user_seq_eval"], seq_dic["num_users_eval"], num_items
-        )
-        test_rating_matrix = generate_rating_matrix_test(seq_dic["user_seq_test"], seq_dic["num_users_test"], num_items)
+
+    valid_rating_matrix = generate_rating_matrix_valid(seq_dic["user_seq"], seq_dic["num_users"], num_items)
+    test_rating_matrix = generate_rating_matrix_test(seq_dic["user_seq"], seq_dic["num_users"], num_items)
     return valid_rating_matrix, test_rating_matrix
 
 
@@ -259,98 +254,41 @@ def idcg_k(k):
         return res
 
 
-def get_seq_dic(args):
-
-    if args.data_name in sequential_data_list:
-        args.data_file = args.data_dir + args.data_name + ".txt"  # Beauty.txt
-        args.sample_file = args.data_dir + args.data_name + "_sample.txt"  # Beauty_sample.txt
-        user_seq, max_item, num_users, sample_seq = get_user_seqs_and_sample(args.data_file, args.sample_file)
-        seq_dic = {
-            "user_seq": user_seq,
-            "num_users": num_users,
-            "sample_seq": sample_seq,
-        }
-
-    elif args.data_name in session_based_data_list:
-        args.data_file = args.data_dir + args.data_name + "/" + args.data_name + ".train.inter"
-        args.data_file_eval = args.data_dir + args.data_name + "/" + args.data_name + ".valid.inter"
-        args.data_file_test = args.data_dir + args.data_name + "/" + args.data_name + ".test.inter"
-        args.sample_file_eval = args.data_dir + args.data_name + "/" + args.data_name + "_valid_sample.txt"
-        args.sample_file_test = args.data_dir + args.data_name + "/" + args.data_name + "_test_sample.txt"
-
-        user_seq, max_item = get_user_seqs_and_max_item(args.data_file)
-        (
-            user_seq_eval,
-            num_users_eval,
-            sample_seq_eval,
-        ) = get_user_seqs_and_sample4session_based(args.data_file_eval, args.sample_file_eval)
-        (
-            user_seq_test,
-            num_users_test,
-            sample_seq_test,
-        ) = get_user_seqs_and_sample4session_based(args.data_file_test, args.sample_file_test)
-        seq_dic = {
-            "user_seq": user_seq,
-            "user_seq_eval": user_seq_eval,
-            "num_users_eval": num_users_eval,
-            "sample_seq_eval": sample_seq_eval,
-            "user_seq_test": user_seq_test,
-            "num_users_test": num_users_test,
-            "sample_seq_test": sample_seq_test,
-        }
-
-    return seq_dic, max_item
-
 
 def get_dataloder(args, seq_dic):
+    """
+    数据输入方法
+    Dataset需要继承它并且实现两个成员方法:
+    __getitem__() 怎么读取数据
+    __len__() 返回数据长度
+    """
+
     # seq_dic        {'user_seq':[], 'num_users':[], 'sample_seq':[]}
 
-    if args.data_name in sequential_data_list:
-        # 构造 train、eval、test 数据集
-        train_dataset = CIFARecDataset(args, seq_dic, data_type="train")
-        # train_sampler = RandomSampler(train_dataset)
-        train_sampler = SequentialSampler(train_dataset)
-        train_dataloader = DataLoader(train_dataset, sampler=train_sampler, batch_size=args.batch_size)
 
-        eval_dataset = CIFARecDataset(
-            args,
-            seq_dic,
-            test_neg_items=seq_dic["sample_seq"],
-            data_type="valid",
-        )
-        eval_sampler = SequentialSampler(eval_dataset)
-        eval_dataloader = DataLoader(eval_dataset, sampler=eval_sampler, batch_size=args.batch_size)
+    # 构造 train、eval、test 数据集
+    train_dataset = CIFARecDataset(args, seq_dic, data_type="train") # 在这里样本输入只需要重构这个方法即可
+    # train_sampler = RandomSampler(train_dataset)
+    train_sampler = SequentialSampler(train_dataset) #按顺序对数据集采样
 
-        test_dataset = CIFARecDataset(
-            args,
-            seq_dic,
-            test_neg_items=seq_dic["sample_seq"],
-            data_type="test",
-        )
-        test_sampler = SequentialSampler(test_dataset)
-        test_dataloader = DataLoader(test_dataset, sampler=test_sampler, batch_size=args.batch_size)
+    #  Data loader. Combines a dataset and a sampler, and provides an iterable over the given dataset.
+    train_dataloader = DataLoader(train_dataset, sampler=train_sampler, batch_size=args.batch_size)
 
-    elif args.data_name in session_based_data_list:
-        train_dataset = CIFARecDataset(args, seq_dic["user_seq"], data_type="session")
-        train_sampler = RandomSampler(train_dataset)
-        train_dataloader = DataLoader(train_dataset, sampler=train_sampler, batch_size=args.batch_size)
+    eval_dataset = CIFARecDataset(
+        args,
+        seq_dic,
+        test_neg_items=seq_dic["sample_seq"],
+        data_type="valid",
+    )
+    eval_sampler = SequentialSampler(eval_dataset)
+    eval_dataloader = DataLoader(eval_dataset, sampler=eval_sampler, batch_size=args.batch_size)
 
-        eval_dataset = CIFARecDataset(
-            args,
-            seq_dic["user_seq_eval"],
-            test_neg_items=seq_dic["sample_seq_eval"],
-            data_type="session",
-        )
-        eval_sampler = SequentialSampler(eval_dataset)
-        eval_dataloader = DataLoader(eval_dataset, sampler=eval_sampler, batch_size=args.batch_size)
-
-        test_dataset = CIFARecDataset(
-            args,
-            seq_dic["user_seq_test"],
-            test_neg_items=seq_dic["sample_seq_test"],
-            data_type="session",
-        )
-        test_sampler = SequentialSampler(test_dataset)
-        test_dataloader = DataLoader(test_dataset, sampler=test_sampler, batch_size=args.batch_size)
-
+    test_dataset = CIFARecDataset(
+        args,
+        seq_dic,
+        test_neg_items=seq_dic["sample_seq"],
+        data_type="test",
+    )
+    test_sampler = SequentialSampler(test_dataset)
+    test_dataloader = DataLoader(test_dataset, sampler=test_sampler, batch_size=args.batch_size)
     return train_dataloader, eval_dataloader, test_dataloader

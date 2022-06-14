@@ -10,7 +10,6 @@ from utils import (
     check_path,
     set_seed,
     get_local_time,
-    # get_seq_dic,
     get_dataloder,
     get_rating_matrix,
 )
@@ -93,7 +92,18 @@ def main():
     args.checkpoint_path = os.path.join(args.output_dir, args_str + ".pt")
 
     # 加载数据
-    # seq_dic   {'user_seq':[], 'num_users':[], 'sample_seq':[]}
+    """
+    生成 seq dict
+    user_id_seq     所有用户的id               (usernum,)
+    user_age_seq    用户对应的年龄              (usernum,)
+    user_seq        用户的行为序列  即每一个用户评价过哪些书本的 id              (usernum,n) n不确定要看用户多少行为
+    rating_seq      用户行为序列对每一个 item 的评分              (usernum,n) n不确定要看用户多少行为
+    sample_seq      负采样的 itemid      (usernum,负样本数量)
+    num_users       用户数量    
+    max_age         最大的那个年龄
+    max_item        最大 item 的 id
+    max_rating      最大的评分
+    """
     # max_item  item 的最大个数
     # num_users user 的最大个数
     seq_dic, max_item, num_users = get_seq_dic(args)

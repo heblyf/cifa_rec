@@ -64,7 +64,9 @@ class Trainer:
             "NDCG@10": "{:.4f}".format(NDCG_10),
             "MRR": "{:.4f}".format(MRR),
         }
+        print("*"*100)
         print(post_fix)
+        print("*"*100)
         with open(self.args.log_file, "a") as f:
             f.write(str(post_fix) + "\n")
         return [HIT_1, NDCG_1, HIT_5, NDCG_5, HIT_10, NDCG_10, MRR], str(post_fix)
@@ -84,7 +86,9 @@ class Trainer:
             "HIT@20": "{:.4f}".format(recall[3]),
             "NDCG@20": "{:.4f}".format(ndcg[3]),
         }
+        print("*"*100)
         print(post_fix)
+        print("*"*100)
         with open(self.args.log_file, "a") as f:
             f.write(str(post_fix) + "\n")
         return (

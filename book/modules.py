@@ -222,7 +222,7 @@ class Encoder(nn.Module):
     def __init__(self, args):
         super(Encoder, self).__init__()
         layer = Layer(args)
-        self.layer = nn.ModuleList([copy.deepcopy(layer) for _ in range(args.num_hidden_layers)])
+        self.layer = nn.ModuleList([copy.deepcopy(layer) for _ in range(args.num_hidden_layers)])#复制num_hidden_layers个Layer层
 
     def forward(self, hidden_states, attention_mask, output_all_encoded_layers=True):
         all_encoder_layers = []

@@ -10,7 +10,6 @@ from utils import (
     check_path,
     set_seed,
     get_local_time,
-    # get_seq_dic,
     get_dataloder,
     get_rating_matrix,
 )

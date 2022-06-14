@@ -62,7 +62,7 @@ def neg_sample(item_set, item_size):  # 前闭后闭
 def neg_sample_items(item_set, item_size):
     neg_samples = []
     item = random.randint(1, item_size - 1)
-    while len(neg_samples) <= 50:
+    while len(neg_samples) <= 50:  # 采集的负样本的数量
         item = random.randint(1, item_size - 1)
         if item not in item_set:
             neg_samples.append(item)
@@ -73,11 +73,13 @@ def neg_sample_items(item_set, item_size):
 def gen_seq_dic(args):
     """
     生成 seq dict
-    user_id_seq     所有用户的 id
-    user_seq        用户的行为序列 即每一个用户评价过哪些电影的 id
-    rating_seq      用户行为序列对每一个 item 的评分
-    sample_seq      负采样的 itemid
-    num_users       用户数量
+    user_id_seq     所有用户的id               (usernum,)
+    user_age_seq    用户对应的年龄              (usernum,)
+    user_seq        用户的行为序列  即每一个用户评价过哪些书本的 id              (usernum,n) n不确定要看用户多少行为
+    rating_seq      用户行为序列对每一个 item 的评分              (usernum,n) n不确定要看用户多少行为
+    sample_seq      负采样的 itemid      (usernum,负样本数量)
+    num_users       用户数量    
+    max_age         最大的那个年龄
     max_item        最大 item 的 id
     max_rating      最大的评分
     """
@@ -106,11 +108,13 @@ def gen_seq_dic(args):
         if len(book_seq) == 0:
             continue
 
+        # 有行为的用户id
         user_id_seq.append(user_id)
 
         # 用户年龄
         user_age_seq.append(user_age[i])
 
+        # 用户行为序列，就是bookid 列表
         book_id_seq = list(book_seq["Book-ID"])
         user_seq.append(book_id_seq)
 
@@ -161,7 +165,7 @@ if __name__ == "__main__":
     # 参数设置
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", default="book/data", type=str)
-    parser.add_argument("--limit", default=10000, type=int)
+    parser.add_argument("--limit", default=5000, type=int)
 
     args = parser.parse_args()
 

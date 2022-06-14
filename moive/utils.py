@@ -259,49 +259,6 @@ def idcg_k(k):
         return res
 
 
-def get_seq_dic(args):
-
-    if args.data_name in sequential_data_list:
-        args.data_file = args.data_dir + args.data_name + ".txt"  # Beauty.txt
-        args.sample_file = args.data_dir + args.data_name + "_sample.txt"  # Beauty_sample.txt
-        user_seq, max_item, num_users, sample_seq = get_user_seqs_and_sample(args.data_file, args.sample_file)
-        seq_dic = {
-            "user_seq": user_seq,
-            "num_users": num_users,
-            "sample_seq": sample_seq,
-        }
-
-    elif args.data_name in session_based_data_list:
-        args.data_file = args.data_dir + args.data_name + "/" + args.data_name + ".train.inter"
-        args.data_file_eval = args.data_dir + args.data_name + "/" + args.data_name + ".valid.inter"
-        args.data_file_test = args.data_dir + args.data_name + "/" + args.data_name + ".test.inter"
-        args.sample_file_eval = args.data_dir + args.data_name + "/" + args.data_name + "_valid_sample.txt"
-        args.sample_file_test = args.data_dir + args.data_name + "/" + args.data_name + "_test_sample.txt"
-
-        user_seq, max_item = get_user_seqs_and_max_item(args.data_file)
-        (
-            user_seq_eval,
-            num_users_eval,
-            sample_seq_eval,
-        ) = get_user_seqs_and_sample4session_based(args.data_file_eval, args.sample_file_eval)
-        (
-            user_seq_test,
-            num_users_test,
-            sample_seq_test,
-        ) = get_user_seqs_and_sample4session_based(args.data_file_test, args.sample_file_test)
-        seq_dic = {
-            "user_seq": user_seq,
-            "user_seq_eval": user_seq_eval,
-            "num_users_eval": num_users_eval,
-            "sample_seq_eval": sample_seq_eval,
-            "user_seq_test": user_seq_test,
-            "num_users_test": num_users_test,
-            "sample_seq_test": sample_seq_test,
-        }
-
-    return seq_dic, max_item
-
-
 def get_dataloder(args, seq_dic):
     # seq_dic        {'user_seq':[], 'num_users':[], 'sample_seq':[]}
 
