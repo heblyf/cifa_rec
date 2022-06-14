@@ -17,10 +17,10 @@ class CIFARecDataset(Dataset):
 
         self.user_id_seq = []
 
-        user_seq = seq_dic["user_seq"]
-        user_age_seq = seq_dic["user_age_seq"]
-        user_id_seq = seq_dic["user_id_seq"]
-        rating_seq = seq_dic["rating_seq"]
+        user_seq = seq_dic["user_seq"] # 用户行为
+        user_age_seq = seq_dic["user_age_seq"] #用户年龄序列
+        user_id_seq = seq_dic["user_id_seq"] # 用户id序列
+        rating_seq = seq_dic["rating_seq"] # 用户打分序列
 
         # 训练集：取 1~n-2，并且构造如下样本 1、1~2...1~n-2
         # 验证集：取 1~n-1

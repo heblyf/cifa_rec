@@ -263,7 +263,7 @@ def get_dataloder(args, seq_dic):
     __len__() 返回数据长度
     """
 
-    # seq_dic        {'user_seq':[], 'num_users':[], 'sample_seq':[]}
+    # seq_dic
 
 
     # 构造 train、eval、test 数据集

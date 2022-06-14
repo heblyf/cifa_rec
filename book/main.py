@@ -81,7 +81,7 @@ def main():
     # 保存参数
     cur_time = get_local_time()
     if args.no_filters:
-        args.model_name = "CIFARec"
+        args.model_name = "CIFARec_nofilter"
     args_str = f"{args.model_name}-{args.data_name}"
     args.log_file = os.path.join(args.output_dir, args_str + ".txt")
     print(str(args))
@@ -112,6 +112,7 @@ def main():
     args.max_rating = args.max_rating + 1
     args.num_users = num_users + 1
 
+    # 样本生成器
     train_dataloader, eval_dataloader, test_dataloader = get_dataloder(args, seq_dic)
 
     # 需要注意的是，序列 train 后两位没取，valid 取到了倒数第二位，test 取到了倒数第一位
